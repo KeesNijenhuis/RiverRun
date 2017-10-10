@@ -1,3 +1,9 @@
+/**
+ *  @Author Kees Nijenhuis
+ *  De Player class
+ *
+ **/
+
 class Player {
   Terrain terr = new Terrain();
 
@@ -6,10 +12,10 @@ class Player {
   float velX = 0;
   float velY = 0;
   float playerSpeed = 10;
-  float jumpSpeed = -10;
+  float jumpSpeed = -6;
   float size = 10;
 
-  float upKey, rightKey, downKey, leftKey;
+  float upKey, rightKey, downKey, leftKey, spaceKey;
 
   boolean onGround;
   float gravity = 0.1;
@@ -19,24 +25,14 @@ class Player {
     playerY = 100;
   }
 
+
+
   void draw() {
     velY += gravity;
 
 
-
-    boolean tempOnGround = false;
-
-    boolean collided = collision(playerX, playerY, size, terr.x, terr.y, terr.w, terr.h);
-
-    if (collided && upKey == 1) {
-        //if(playerY 
-        velY = 0;
-      
-    } else {
-      //println("Ook kut");
-      velX = (rightKey - leftKey) * playerSpeed;
-    }
-
+    checkCollision();
+    jump();
 
     playerX += velX;
     playerY += velY;
@@ -44,8 +40,32 @@ class Player {
 
 
     ellipse(playerX, playerY, size, size);
-    onGround = tempOnGround;
   }
+
+  void checkCollision() {
+    boolean collidedGround = collision(playerX, playerY, size, terr.x, terr.y, terr.w, terr.h);
+
+
+    if (collidedGround) {
+      onGround = true;
+    } else {
+      velX = (rightKey - leftKey) * playerSpeed;
+      onGround = false;
+    }
+
+    if (onGround) {
+      velY = 0;
+      velX = (rightKey - leftKey) * playerSpeed;
+    }
+  }
+
+  void jump() {
+    if (spaceKey == 1) 
+      velY = jumpSpeed;
+    else if (spaceKey == 0 && !onGround) 
+      velY += gravity;
+  }
+
 
   boolean collision(float playerX, float playerY, float playerSize, float terrainX, float terrainY, float terrainW, float terrainH) {
 
@@ -61,16 +81,13 @@ class Player {
     float distX = playerX - testX;
     float distY = playerY - testY;
     float distance = sqrt((distX * distX) + (distY * distY));
-    println(distance);
+    //println(distance);
 
     if (distance <= playerSize) {
       return true;
     }
     return false;
   }
-
-
-
 
   void update() {
   }

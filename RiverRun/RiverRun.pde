@@ -28,7 +28,7 @@ void drawGame() {
 void keyPressed() {
   if (key == ' ') {
     if (player.onGround == true) {
-      player.velY = player.jumpSpeed;
+      player.spaceKey =1;
     }
   }
   if (keyCode == LEFT) {
@@ -46,6 +46,10 @@ void keyPressed() {
 }
 
 void keyReleased() {
+  if (key == ' ') {
+
+    player.spaceKey = 0;
+  }
   if (keyCode == LEFT) {
     player.leftKey = 0;
   }

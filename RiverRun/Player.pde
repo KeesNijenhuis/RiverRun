@@ -39,7 +39,7 @@ class Player {
 
 
 
-    ellipse(playerX, playerY, size, size);
+    rect(playerX, playerY, size, size);
   }
 
   void checkCollision() {
